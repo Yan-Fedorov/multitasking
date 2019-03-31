@@ -7,7 +7,7 @@ namespace ChallangeX1.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class GuessNumberController: ControllerBase
+    public class GuessNumberController : ControllerBase
     {
         private IGuessNumberService _guessNumberService;
         public GuessNumberController(IGuessNumberService guessNumberService)
@@ -16,9 +16,13 @@ namespace ChallangeX1.Controllers
         }
 
         [HttpPost]
-        public ActionResult<List<GuessNumberResponse>> Post([FromBody] GuessNumberRequest value)
+        public ActionResult<List<GuessNumberResponse>> Post([FromBody] GuessNumberRequest request)
         {
-            var result = _guessNumberService.PlayGame(value);
+            if (request.MinValue >= request.MaxValue)
+            {
+                return BadRequest();
+            }
+            var result = _guessNumberService.PlayGame(request);
             return result;
         }
     }

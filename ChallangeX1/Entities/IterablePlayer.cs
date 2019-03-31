@@ -1,8 +1,6 @@
 ﻿using ChallangeX1.GuessNumberModels;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using System.Threading;
 
 namespace ChallangeX1.Entities
 {
@@ -14,25 +12,35 @@ namespace ChallangeX1.Entities
             LocalGuessNumbes = new List<int>();
         }
         public int LastChoice { get; set; }
-        internal override MakeChoiceResult MakeChoice(int minValue, int maxValue)
+        internal override MakeChoiceResult MakeChoice(int minValue, int maxValue, int numberToBeGuessed, CancellationTokenSource cancelTokSSrc, CancellationToken token)
         {
-            if(LastChoice != 0 && LastChoice > minValue)
+            do
             {
-                LocalGuessNumbes.Add(LastChoice);
-                LastChoice++;
-                return new MakeChoiceResult
+                if (LastChoice > minValue)
                 {
-                    PlayerName = Name,
-                    Choice = LastChoice
-                };
+                    LocalGuessNumbes.Add(LastChoice);
+                    LastChoice++;
+                    return new MakeChoiceResult
+                    {
+                        PlayerName = Name,
+                        Choice = LastChoice
+                    };
+                }
+                else
+                {
+                    LastChoice = minValue;
+                }
             }
+            while (LastChoice != numberToBeGuessed && !token.IsCancellationRequested);
 
-            LastChoice = minValue;
+            cancelTokSSrc.Cancel();
             return new MakeChoiceResult
             {
                 PlayerName = Name,
                 Choice = LastChoice
             };
+
         }
     }
 }
+

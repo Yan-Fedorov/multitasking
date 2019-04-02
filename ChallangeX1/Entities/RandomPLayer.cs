@@ -23,7 +23,10 @@ namespace ChallangeX1.Entities
                 LocalGuessNumbes.Add(choice);
             }
             while (choice != numberToBeGuessed && !token.IsCancellationRequested);
-            cancelTokSSrc.Cancel();
+            //if (!cancelTokSSrc.IsCancellationRequested)
+            //{
+            //    cancelTokSSrc.Cancel();
+            //}
             return new MakeChoiceResult
             {
                 PlayerName = Name,

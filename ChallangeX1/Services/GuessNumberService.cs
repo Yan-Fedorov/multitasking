@@ -1,6 +1,7 @@
 ﻿using ChallangeX1.Entities;
 using ChallangeX1.GuessNumberModels;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -32,7 +33,7 @@ namespace ChallangeX1.Services
             CancellationToken ct = cancelToken.Token;
             foreach (var player in players)
             {
-                tasks.Add(new Task<MakeChoiceResult>(() => player.MakeChoice(request.MinValue, request.MinValue, request.GuessedNumber, cancelToken, ct), ct));
+                tasks.Add(new Task<MakeChoiceResult>(() => player.MakeChoice(request.MinValue, request.MaxValue, request.GuessedNumber, cancelToken, ct), ct));
             }
 
             foreach (var task in tasks)
@@ -40,10 +41,13 @@ namespace ChallangeX1.Services
                 task.Start();
             }
 
-            foreach (var task in tasks)
-            {
-                task.Wait();
-            }
+            var tasksArr = tasks.ToArray();
+            Task.WaitAny(tasksArr);
+            //foreach (var task in tasks)
+            //{
+            //    task.Wait();
+            //}
+            cancelToken.Cancel();
 
             foreach (var task in tasks)
             {

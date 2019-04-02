@@ -29,7 +29,10 @@ namespace ChallangeX1.Entities
             }
             while (choice != numberToBeGuessed && !token.IsCancellationRequested);
 
-            cancelTokSSrc.Cancel();
+            //if (!cancelTokSSrc.IsCancellationRequested)
+            //{
+            //    cancelTokSSrc.Cancel();
+            //}
             return new MakeChoiceResult
             {
                 PlayerName = Name,

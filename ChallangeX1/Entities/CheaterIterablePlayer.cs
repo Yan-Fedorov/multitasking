@@ -35,7 +35,11 @@ namespace ChallangeX1.Entities
             }
             while (LastChoice != numberToBeGuessed && !token.IsCancellationRequested);
 
-            cancelTokSSrc.Cancel();
+            //if (!cancelTokSSrc.IsCancellationRequested)
+            //{
+            //    cancelTokSSrc.Cancel();
+            //}
+            
             return new MakeChoiceResult {
                 PlayerName = Name,
                 Choice = LastChoice

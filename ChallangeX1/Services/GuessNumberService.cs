@@ -20,6 +20,7 @@ namespace ChallangeX1.Services
             var cheaterIterablePlayer = new CheaterIterablePlayer();
             var iterablePlayer = new IterablePlayer();
             var randomPlayer = new RandomPLayer();
+            randomPlayer.SendNum += TestService.SendNumToCheater;
             var wiseRandomPlayer = new WiseRandomPlayer();
             
             var players = new List<BasicPlayer>();

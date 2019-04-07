@@ -7,33 +7,22 @@ namespace ChallangeX1.Entities
 {
     public class IterablePlayer : BasicPlayer
     {
-        //private List<int> _numbersForCheater;
-        //private object _locker;
         private IGlobalDataManager _globalDataManager;
 
-        public IterablePlayer(/*List<int> numbersForCheater, object locker,*/ IGlobalDataManager globalDataManager)
+        public IterablePlayer(IGlobalDataManager globalDataManager)
         {
             _globalDataManager = globalDataManager;
             Name = "IterablePlayer";
             LocalGuessNumbes = new List<int>();
-            //_numbersForCheater = numbersForCheater;
-            //_locker = locker;
-
-
         }
-        public int LastChoice { get; set; }
-        internal override MakeChoiceResult MakeChoice(int minValue, int maxValue, int numberToBeGuessed, CancellationToken token)
+        public override MakeChoiceResult MakeChoice(int minValue, int maxValue, int numberToBeGuessed, CancellationToken token)
         {
             LastChoice = minValue-1;
             do
             {
                 if (LastChoice >= minValue)
                 {
-                    //_globalDataManager.SetGlobalGuesses(LastChoice);
-                    //    lock (_locker)
-                    //    {
-                    //        _numbersForCheater.Add(LastChoice);
-                    //    }
+                    _globalDataManager.SetGlobalGuesses(LastChoice);
                 }
                 LastChoice++;
                 LocalGuessNumbes.Add(LastChoice);

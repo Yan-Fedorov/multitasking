@@ -9,6 +9,6 @@ namespace ChallangeX1.Entities
         internal string Name;
         public List<int> LocalGuessNumbes;
         public int LastChoice;
-        internal abstract MakeChoiceResult MakeChoice(int minValue, int maxValue, int numberToBeGuessed, CancellationToken token);
+        public abstract MakeChoiceResult MakeChoice(int minValue, int maxValue, int numberToBeGuessed, CancellationToken token);
     }
 }

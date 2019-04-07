@@ -10,19 +10,15 @@ namespace ChallangeX1.Entities
     {
         private readonly IGlobalDataManager _globalDataManager;
 
-        //private List<int> _numbersForCheater;
-        //private object _locker;
-        public WiseRandomPlayer(/*List<int> numbersForCheater, object locker*/IGlobalDataManager globalDataManager)
+        public WiseRandomPlayer(IGlobalDataManager globalDataManager)
         {
             Name = "WiseRandomPlayer";
             LocalGuessNumbes = new List<int>();
             LastChoice = 0;
             _globalDataManager = globalDataManager;
-            //_numbersForCheater = numbersForCheater;
-            //_locker = locker;
         }
 
-        internal override MakeChoiceResult MakeChoice(int minValue, int maxValue, int numberToBeGuessed, CancellationToken token)
+        public override MakeChoiceResult MakeChoice(int minValue, int maxValue, int numberToBeGuessed, CancellationToken token)
         {
             Random rnd = new Random();
             int i = 0;
@@ -32,13 +28,9 @@ namespace ChallangeX1.Entities
                 if (i > 0)
                 {
                     _globalDataManager.SetGlobalGuesses(LastChoice);
-                //    //lock (_locker)
-                //    //{
-                //    //    _numbersForCheater.Add(LastChoice);
-                //    //}
-                   i++;
+                    
                 }
-
+                i++;
                 do
                 {
                     LastChoice = rnd.Next(minValue, maxValue + 1);

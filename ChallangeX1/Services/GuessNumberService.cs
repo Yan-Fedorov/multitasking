@@ -17,14 +17,13 @@ namespace ChallangeX1.Services
         public List<GuessNumberResponse> PlayGame(GuessNumberRequest request)
         {
             var result = new List<GuessNumberResponse>();
-            object locker = new object();
             IGlobalDataManager globalDataManager = new GlobalDataManager();
-            var iterablePlayer = new IterablePlayer(/*cheaterIterablePlayer.GlobalGuessedNumbers, locker, */globalDataManager);
+            var iterablePlayer = new IterablePlayer(globalDataManager);
             
             
-            var randomPlayer = new RandomPLayer(/*cheaterIterablePlayer.GlobalGuessedNumbers, locker, */globalDataManager);
-            var wiseRandomPlayer = new WiseRandomPlayer(/*cheaterIterablePlayer.GlobalGuessedNumbers, locker, */globalDataManager);
-            var cheaterIterablePlayer = new CheaterIterablePlayer(locker, globalDataManager);
+            var randomPlayer = new RandomPLayer(globalDataManager);
+            var wiseRandomPlayer = new WiseRandomPlayer(globalDataManager);
+            var cheaterIterablePlayer = new CheaterIterablePlayer(globalDataManager);
 
             var players = new List<BasicPlayer>();
             

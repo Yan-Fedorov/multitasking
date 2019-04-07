@@ -8,18 +8,16 @@ namespace ChallangeX1.Entities
     public class CheaterIterablePlayer: BasicPlayer
     {
         public List<int> GlobalGuessedNumbers;
-        private readonly object _locker;
         private readonly IGlobalDataManager _globalDataManager;
 
-        public CheaterIterablePlayer(object locker, IGlobalDataManager globalDataManager)
+        public CheaterIterablePlayer(IGlobalDataManager globalDataManager)
         {
             Name = "CheaterIterablePlayer";
             LocalGuessNumbes = new List<int>();
-            _locker = locker;
             _globalDataManager = globalDataManager;
         }
 
-        internal override MakeChoiceResult MakeChoice(int minValue, int maxValue, int numberToBeGuessed, CancellationToken token)
+        public override MakeChoiceResult MakeChoice(int minValue, int maxValue, int numberToBeGuessed, CancellationToken token)
         {
             LastChoice = minValue - 1;
             do
@@ -27,9 +25,9 @@ namespace ChallangeX1.Entities
                 do
                 {
                     LastChoice++;
-                    LocalGuessNumbes.Add(LastChoice);
                 }
                 while (_globalDataManager.CheckGlobalGuesses(LastChoice));
+                LocalGuessNumbes.Add(LastChoice);
             }
             while (LastChoice != numberToBeGuessed && !token.IsCancellationRequested);
 

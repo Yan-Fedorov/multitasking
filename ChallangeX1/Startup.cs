@@ -21,12 +21,11 @@ namespace ChallangeX1
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddScoped<IGuessNumberService, GuessNumberService>();
-            //services.AddScoped<IGlobalDataManager, GlobalDataManager>();
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
             services.AddCors();
             services.AddSwaggerGen(c =>
             {
-                c.SwaggerDoc("v1", new Info { Title = "My API", Version = "v1" });
+                c.SwaggerDoc("v1", new Info { Title = "GAME API", Version = "v1" });
             });
         }
 
@@ -46,7 +45,7 @@ namespace ChallangeX1
 
             app.UseSwaggerUI(c =>
             {
-                c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1");
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "GAME API");
             });
             app.UseMvc();
         }

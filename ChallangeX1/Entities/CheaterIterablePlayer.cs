@@ -14,7 +14,7 @@ namespace ChallangeX1.Entities
             LocalGuessNumbes = new List<int>();
         }
         
-        internal override MakeChoiceResult MakeChoice(int minValue, int maxValue, int numberToBeGuessed, CancellationTokenSource cancelTokSSrc, CancellationToken token)
+        internal override MakeChoiceResult MakeChoice(int minValue, int maxValue, int numberToBeGuessed, CancellationToken token)
         {
             do
             {
@@ -34,11 +34,6 @@ namespace ChallangeX1.Entities
                 }
             }
             while (LastChoice != numberToBeGuessed && !token.IsCancellationRequested);
-
-            //if (!cancelTokSSrc.IsCancellationRequested)
-            //{
-            //    cancelTokSSrc.Cancel();
-            //}
             
             return new MakeChoiceResult {
                 PlayerName = Name,

@@ -5,7 +5,7 @@ using System.Threading;
 
 namespace ChallangeX1.Entities
 {
-    public class WiseRandomPlayer: RandomPLayer
+    public class WiseRandomPlayer: BasicPlayer
     {
         public WiseRandomPlayer()
         {
@@ -13,7 +13,7 @@ namespace ChallangeX1.Entities
             LocalGuessNumbes = new List<int>();
         }
 
-        internal override MakeChoiceResult MakeChoice(int minValue, int maxValue, int numberToBeGuessed, CancellationTokenSource cancelTokSSrc, CancellationToken token)
+        internal override MakeChoiceResult MakeChoice(int minValue, int maxValue, int numberToBeGuessed, CancellationToken token)
         {
             Random rnd = new Random();
             int choice;
@@ -23,16 +23,13 @@ namespace ChallangeX1.Entities
                 do
                 {
                     choice = rnd.Next(minValue, maxValue + 1);
+                    LocalGuessNumbes.Add(choice);
                 }
                 while (!LocalGuessNumbes.Contains(choice));
-                LocalGuessNumbes.Add(choice);
+                
             }
             while (choice != numberToBeGuessed && !token.IsCancellationRequested);
 
-            //if (!cancelTokSSrc.IsCancellationRequested)
-            //{
-            //    cancelTokSSrc.Cancel();
-            //}
             return new MakeChoiceResult
             {
                 PlayerName = Name,

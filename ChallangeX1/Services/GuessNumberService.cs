@@ -20,34 +20,26 @@ namespace ChallangeX1.Services
             var cheaterIterablePlayer = new CheaterIterablePlayer();
             var iterablePlayer = new IterablePlayer();
             var randomPlayer = new RandomPLayer();
-            randomPlayer.SendNum += TestService.SendNumToCheater;
+            //randomPlayer.SendNum += TestService.SendNumToCheater;
             var wiseRandomPlayer = new WiseRandomPlayer();
             
             var players = new List<BasicPlayer>();
-            players.Add(cheaterIterablePlayer);
+            //players.Add(cheaterIterablePlayer);
             players.Add(iterablePlayer);
-            players.Add(randomPlayer);
-            players.Add(wiseRandomPlayer);
+            //players.Add(randomPlayer);
+            //players.Add(wiseRandomPlayer);
 
             var tasks = new List<Task<MakeChoiceResult>>();
             CancellationTokenSource cancelToken = new CancellationTokenSource();
             CancellationToken ct = cancelToken.Token;
             foreach (var player in players)
             {
-                tasks.Add(new Task<MakeChoiceResult>(() => player.MakeChoice(request.MinValue, request.MaxValue, request.GuessedNumber, cancelToken, ct), ct));
-            }
-
-            foreach (var task in tasks)
-            {
-                task.Start();
+                tasks.Add(Task.Factory.StartNew(() => player.MakeChoice(request.MinValue, request.MaxValue, request.GuessedNumber, ct), ct));
             }
 
             var tasksArr = tasks.ToArray();
             Task.WaitAny(tasksArr);
-            //foreach (var task in tasks)
-            //{
-            //    task.Wait();
-            //}
+
             cancelToken.Cancel();
 
             foreach (var task in tasks)
@@ -77,12 +69,15 @@ namespace ChallangeX1.Services
                         isWinner = true
                     });
                 }
-                result.Add(new GuessNumberResponse
+                else
                 {
-                    PlayerName = player.Name,
-                    PlayerGuesses = player.LocalGuessNumbes,
-                    isWinner = false
-                });
+                    result.Add(new GuessNumberResponse
+                    {
+                        PlayerName = player.Name,
+                        PlayerGuesses = player.LocalGuessNumbes,
+                        isWinner = false
+                    });
+                }
             }
             return result;
         }

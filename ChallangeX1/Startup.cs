@@ -21,6 +21,7 @@ namespace ChallangeX1
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddScoped<IGuessNumberService, GuessNumberService>();
+            //services.AddScoped<IGlobalDataManager, GlobalDataManager>();
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
             services.AddCors();
             services.AddSwaggerGen(c =>

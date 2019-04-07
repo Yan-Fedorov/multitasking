@@ -1,17 +1,22 @@
 ﻿using ChallangeX1.GuessNumberModels;
+using ChallangeX1.Services;
 using System.Collections.Generic;
 using System.Threading;
 
 namespace ChallangeX1.Entities
 {
-    public class CheaterIterablePlayer : IterablePlayer
+    public class CheaterIterablePlayer: BasicPlayer
     {
         public List<int> GlobalGuessedNumbers;
-        public CheaterIterablePlayer()
+        private readonly object _locker;
+        private readonly IGlobalDataManager _globalDataManager;
+
+        public CheaterIterablePlayer(object locker, IGlobalDataManager globalDataManager)
         {
-            GlobalGuessedNumbers = new List<int>();
             Name = "CheaterIterablePlayer";
             LocalGuessNumbes = new List<int>();
+            _locker = locker;
+            _globalDataManager = globalDataManager;
         }
 
         internal override MakeChoiceResult MakeChoice(int minValue, int maxValue, int numberToBeGuessed, CancellationToken token)
@@ -24,9 +29,7 @@ namespace ChallangeX1.Entities
                     LastChoice++;
                     LocalGuessNumbes.Add(LastChoice);
                 }
-                while (GlobalGuessedNumbers.Contains(LastChoice));
-                GlobalGuessedNumbers.Add(LastChoice);
-
+                while (_globalDataManager.CheckGlobalGuesses(LastChoice));
             }
             while (LastChoice != numberToBeGuessed && !token.IsCancellationRequested);
 

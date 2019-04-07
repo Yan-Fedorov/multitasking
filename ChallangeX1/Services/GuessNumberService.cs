@@ -17,17 +17,21 @@ namespace ChallangeX1.Services
         public List<GuessNumberResponse> PlayGame(GuessNumberRequest request)
         {
             var result = new List<GuessNumberResponse>();
-            var cheaterIterablePlayer = new CheaterIterablePlayer();
-            var iterablePlayer = new IterablePlayer();
-            var randomPlayer = new RandomPLayer();
-            //randomPlayer.SendNum += TestService.SendNumToCheater;
-            var wiseRandomPlayer = new WiseRandomPlayer();
+            object locker = new object();
+            IGlobalDataManager globalDataManager = new GlobalDataManager();
+            var iterablePlayer = new IterablePlayer(/*cheaterIterablePlayer.GlobalGuessedNumbers, locker, */globalDataManager);
             
+            
+            var randomPlayer = new RandomPLayer(/*cheaterIterablePlayer.GlobalGuessedNumbers, locker, */globalDataManager);
+            var wiseRandomPlayer = new WiseRandomPlayer(/*cheaterIterablePlayer.GlobalGuessedNumbers, locker, */globalDataManager);
+            var cheaterIterablePlayer = new CheaterIterablePlayer(locker, globalDataManager);
+
             var players = new List<BasicPlayer>();
-            players.Add(cheaterIterablePlayer);
+            
             players.Add(iterablePlayer);
             players.Add(randomPlayer);
             players.Add(wiseRandomPlayer);
+            players.Add(cheaterIterablePlayer);
 
             var tasks = new List<Task<MakeChoiceResult>>();
             CancellationTokenSource cancelToken = new CancellationTokenSource();
@@ -49,8 +53,8 @@ namespace ChallangeX1.Services
                     result = GenerateStatisticForGame(task.Result.PlayerName, players);
                     break;
                 }
-                //todo: cheater add all lists
             }
+            globalDataManager.CheckGlobalGuesses(1);
             return result;
 
         }

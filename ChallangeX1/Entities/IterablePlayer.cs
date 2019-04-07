@@ -9,18 +9,16 @@ namespace ChallangeX1.Entities
         public IterablePlayer()
         {
             Name = "IterablePlayer";
-            LocalGuessNumbes = new List<int>();        
+            LocalGuessNumbes = new List<int>();
+            
         }
         public int LastChoice { get; set; }
         internal override MakeChoiceResult MakeChoice(int minValue, int maxValue, int numberToBeGuessed, CancellationToken token)
         {
+            LastChoice = minValue-1;
             do
             {
                 LastChoice++;
-                if (LastChoice < minValue)
-                {
-                    LastChoice = minValue;
-                }
                 LocalGuessNumbes.Add(LastChoice);
             }
             while (LastChoice != numberToBeGuessed && !token.IsCancellationRequested);

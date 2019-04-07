@@ -22,11 +22,11 @@ namespace ChallangeX1.Entities
             {
                 do
                 {
-                    choice = rnd.Next(minValue, maxValue + 1);
-                    LocalGuessNumbes.Add(choice);
+                    choice = rnd.Next(minValue, maxValue + 1); 
                 }
-                while (!LocalGuessNumbes.Contains(choice));
-                
+                while (LocalGuessNumbes.Contains(choice));
+                LocalGuessNumbes.Add(choice);
+
             }
             while (choice != numberToBeGuessed && !token.IsCancellationRequested);
 

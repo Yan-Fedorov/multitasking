@@ -24,10 +24,10 @@ namespace ChallangeX1.Services
             var wiseRandomPlayer = new WiseRandomPlayer();
             
             var players = new List<BasicPlayer>();
-            //players.Add(cheaterIterablePlayer);
+            players.Add(cheaterIterablePlayer);
             players.Add(iterablePlayer);
-            //players.Add(randomPlayer);
-            //players.Add(wiseRandomPlayer);
+            players.Add(randomPlayer);
+            players.Add(wiseRandomPlayer);
 
             var tasks = new List<Task<MakeChoiceResult>>();
             CancellationTokenSource cancelToken = new CancellationTokenSource();

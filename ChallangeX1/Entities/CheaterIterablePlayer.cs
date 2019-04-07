@@ -4,7 +4,7 @@ using System.Threading;
 
 namespace ChallangeX1.Entities
 {
-    public class CheaterIterablePlayer: IterablePlayer
+    public class CheaterIterablePlayer : IterablePlayer
     {
         public List<int> GlobalGuessedNumbers;
         public CheaterIterablePlayer()
@@ -13,29 +13,25 @@ namespace ChallangeX1.Entities
             Name = "CheaterIterablePlayer";
             LocalGuessNumbes = new List<int>();
         }
-        
+
         internal override MakeChoiceResult MakeChoice(int minValue, int maxValue, int numberToBeGuessed, CancellationToken token)
         {
+            LastChoice = minValue - 1;
             do
             {
-                if (LastChoice > minValue)
+                do
                 {
-                    do
-                    {
-                        LastChoice++;
-                        LocalGuessNumbes.Add(LastChoice);
-                    }
-                    while (!GlobalGuessedNumbers.Contains(LastChoice));
-                    GlobalGuessedNumbers.Add(LastChoice);
+                    LastChoice++;
+                    LocalGuessNumbes.Add(LastChoice);
                 }
-                else
-                {
-                    LastChoice = minValue;
-                }
+                while (GlobalGuessedNumbers.Contains(LastChoice));
+                GlobalGuessedNumbers.Add(LastChoice);
+
             }
             while (LastChoice != numberToBeGuessed && !token.IsCancellationRequested);
-            
-            return new MakeChoiceResult {
+
+            return new MakeChoiceResult
+            {
                 PlayerName = Name,
                 Choice = LastChoice
             };
